@@ -1,5 +1,8 @@
 <?php
-
+//Route::get('/', function(){
+//	$post = DB::query('SELECT * FROM users');
+	//print_r($post);
+//})
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -16,7 +19,21 @@
 // 	return View::make('home');
 // });
 
-Route::get('/', array(
+Route::get('/', 
+	array(
 	'as' => 'home',
 	'uses' => 'HomeController@home'
 ));
+
+Route::get('user', 
+	array(
+	'as' => 'user',
+	'uses' => 'UserController@user'
+));
+
+
+Route::get('(:any)', function($url)
+{
+	return $url;
+});
+

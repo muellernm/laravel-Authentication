@@ -1,5 +1,5 @@
 @extends('layout.main')
 
 @section('body-content')
-This is from Home 
+This is alauddin
 @stop

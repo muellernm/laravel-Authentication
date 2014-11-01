@@ -20,6 +20,8 @@
 
 require __DIR__.'/../bootstrap/autoload.php';
 
+
+
 /*
 |--------------------------------------------------------------------------
 | Turn On The Lights
@@ -47,3 +49,4 @@ $app = require_once __DIR__.'/../bootstrap/start.php';
 */
 
 $app->run();
+
