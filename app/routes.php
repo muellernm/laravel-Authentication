@@ -32,6 +32,23 @@ Route::get('user',
 ));
 
 
+Route::get('new', 
+	array(
+	'as' => 'new',
+	'uses' => 'UserController@add'
+));
+
+
+Route::post('/', 
+	array(
+	'as' => 'post',
+	'uses' => 'UserController@add_new'
+));
+
+Route::get('user/delete/{user_id}', 'UserController@delete');
+
+
+
 Route::get('(:any)', function($url)
 {
 	return $url;
