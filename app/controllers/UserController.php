@@ -1,6 +1,6 @@
 <?php
 
-class UserController extends BaseController {
+class UserController extends \BaseController {
 
 	/*
 	|--------------------------------------------------------------------------
@@ -15,35 +15,74 @@ class UserController extends BaseController {
 	|
 	*/
 
-	public function user()
+	public function get_index()
 	{
-		$data = DB::table('users')
-					->leftJoin('country', 'users.country_id', '=', 'country.id')
-        			->paginate(15);
-		//$data = User::all();
-		return View::make('user.user', $data);
+		$data = User::all();
+		//$message = ($message) ? $message : 'N/A';
+		return View::make('users.index', array('data'=>$data, 'message'=>'Hello') )->with('title', 'User List');
 	}
 
 	public function add()
 	{
 		$country_options = DB::table('country')->orderBy('country_name', 'asc')->lists('country_name','id');
-		return View::make('user.add')->with('country_options',$country_options);
+		return View::make('users.add')->with('country_options',$country_options)->with('title', 'New User');
 	}
 
 	public function add_new()
 	{
-		$user = new User;
-		$user->name = Input::get('name');
-		$user->email = Input::get('email');
-		$user->country_id = Input::get('country_id');
-		$user->save();
-		return Redirect::to('user')->with('message', 'New User created');
+
+		$validation = User::validate(Input::all() );
+		if($validation->fails())
+		{
+			return Redirect::to('new_user')->withErrors($validation)->withInput();
+		}
+		else
+		{
+			$user = new User;
+			$user->name = Input::get('name');
+			$user->email = Input::get('email');
+			//$user->country_id = Input::get('country_id');
+			$user->save();
+			return Redirect::to('users')->with('message', 'New User created Successfully!');
+		}
+		
 	}
-	public function delete($userid)
+	 public function destroy($id)
+	 {
+
+	 	User::find($id)->delete();
+	 	return Redirect::to('users')->with('message', 'User Deleted');
+
+	 }
+	
+	public function get_edit($id)
 	{
-		$user = User::find($userid);
-		$user->delete();
+		$country_options = DB::table('country')->orderBy('country_name', 'asc')->lists('country_name','id');
+		$user = User::find($id);
+		return View::make('users.edit', array('user'=> $user))->with('country_options', $country_options);
 
 	}
+
+	public function get_update($id)
+	{
+		
+		$validation = User::validate(Input::all() );
+		if($validation->fails())
+		{
+			return Redirect::route('user_update')->withErrors($validation)->withInput();
+		}
+		else
+		{
+			$user = User::find($id);
+            $user->name       = Input::get('name');
+            $user->email      = Input::get('email');
+            $user->save();
+            return Redirect::to('users')->with('message', 'User Updated Successfully!');
+		}
+
+
+	} 
+	
+	
 
 }

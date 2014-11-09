@@ -14,7 +14,7 @@
         <li><a href="{{URL::route('home')}}">Home</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-center">
-          <li><a href="{{URL::route('user')}}">List</a></li>
+          <li><a href="{{URL::route('user_list')}}">List</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
           <li><a href="#"><span class="fa fa-sign-in"></span>  Login</a></li>

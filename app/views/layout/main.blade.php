@@ -2,7 +2,13 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Laravel PHP App</title>
+	<title>
+	@if(isset($title)) 
+		{{ $title }}
+	@else
+		Laravel Title
+	@endif
+	</title>
 	
 	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 	<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
@@ -16,8 +22,11 @@
 	</style>
 </head>
 <body>
+	
 	@include('layout.nav')
-	<div class="container">
+	@if(Session::has('message'))
+		<p style="color:green">{{ Session::get('message') }}</p>
+	@endif<div class="container">
 		@yield('body-content')
 	</div>
 </body>

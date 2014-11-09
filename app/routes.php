@@ -1,8 +1,5 @@
 <?php
-//Route::get('/', function(){
-//	$post = DB::query('SELECT * FROM users');
-	//print_r($post);
-//})
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -14,43 +11,17 @@
 |
 */
 
-// Route::get('/', function()
-// {
-// 	return View::make('home');
-// });
+Route::get('/', array('as' => 'home','uses' => 'HomeController@home'));
 
-Route::get('/', 
-	array(
-	'as' => 'home',
-	'uses' => 'HomeController@home'
-));
-
-Route::get('user', 
-	array(
-	'as' => 'user',
-	'uses' => 'UserController@user'
-));
-
-
-Route::get('new', 
-	array(
-	'as' => 'new',
-	'uses' => 'UserController@add'
-));
-
-
-Route::post('/', 
-	array(
-	'as' => 'post',
-	'uses' => 'UserController@add_new'
-));
-
-Route::get('user/delete/{user_id}', 'UserController@delete');
+Route::get('users', array('as' => 'user_list','uses' => 'UserController@get_index'));
+Route::get('user/new', array('as' => 'new_user','uses' => 'UserController@add'));
+Route::post('user/add', array('as' => 'user_add','uses' => 'UserController@add_new'));
+Route::get('user/view/{id}', array('as' => 'user_get_edit','uses' => 'UserController@get_edit'));
+Route::post('user/edit', array('as' => 'user_edit','uses' => 'UserController@edit'));
+Route::put('user/update/{id}', array('as' => 'user_update','uses' => 'UserController@get_update'));
+Route::delete('user/destroy/{id}', array('as' => 'user_destroy','uses' => 'UserController@destroy'));
 
 
 
-Route::get('(:any)', function($url)
-{
-	return $url;
-});
+
 
