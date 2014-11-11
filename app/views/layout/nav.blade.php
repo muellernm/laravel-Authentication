@@ -14,8 +14,22 @@
         <li><a href="{{URL::route('home')}}">Home</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-center">
-          <li><a href="{{URL::route('user_list')}}">List</a></li>
+          <li><a href="{{URL::route('user-list')}}">List</a></li>
       </ul>
+      @if(Auth::check())
+      <ul class="nav navbar-nav navbar-center">
+          <li><a href="{{URL::route('user-profile', Auth::user()->username)}}">{{ Auth::user()->username }}</a></li>
+          <li><a href="{{URL::route('user-change-password')}}">Change Password</a></li>
+          <li><a href="{{URL::route('user-sign-out')}}">Sign Out</a></li>
+      </ul>
+      @else
+      <ul class="nav navbar-nav navbar-center">
+          <li><a href="{{URL::route('user-sign-in')}}">Sign In</a></li>
+          <li><a href="{{URL::route('user-forgot-password')}}">Forgot Password</a></li>
+          <li><a href="{{URL::route('user-create')}}">Create an account</a></li>
+      </ul>
+      @endif
+
       <ul class="nav navbar-nav navbar-right">
           <li><a href="#"><span class="fa fa-sign-in"></span>  Login</a></li>
       </ul>

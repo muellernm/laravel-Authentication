@@ -5,10 +5,10 @@
 	<h1>New User Add</h1>
 	@if($errors->has())
    @foreach ($errors->all() as $error)
-      <div>{{ $error }}</div>
+      <div class="warning">{{ $error }}</div>
   @endforeach
 @endif
-	{{ Form::open(array('route' => array('user_update', $user->id), 'method'=>'put')) }} 
+	{{ Form::open(array('route' => array('put_user_update', $user->id), 'method'=>'put')) }} 
 <table class="table">
 	<tbody>
 	<tr>

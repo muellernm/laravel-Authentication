@@ -14,6 +14,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 *
 	 * @var string
 	 */
+	protected $fillable = array('name', 'email', 'username', 'password', 'password_temp', 'code', 'active');
 	protected $table = 'users';
 
 	/**
@@ -23,12 +24,35 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 */
 	protected $hidden = array('password', 'remember_token');
 
-	public static $rules = array(
-			'name'=>'required|min:2',
-			'email'=>'required|email'
+	public static $rules_create = array(
+			'name'            => 'required|min:2',
+			'email'           => 'required|max:60|email|unique:users',
+			'username'        => 'required|min:3|max:20|unique:users',
+			'password'        => 'required|min:6',
+			'password_again'  => 'required|same:password'
 		);
+
 	public static function validate($data){
-		return Validator::make($data, static::$rules);
+		return Validator::make($data, static::$rules_create);
+	}
+
+	public static $rules_sign_in = array(
+			'email'           => 'required|email',
+			'password'        => 'required'
+		);
+
+	public static function validateSignIn($data){
+		return Validator::make($data, static::$rules_sign_in);
+	}
+
+	public static $rules_password_change = array(
+			'oldpassword'           => 'required',
+			'password'        => 'required|min:6',
+			'password_again'  => 'required|same:password'
+		);
+
+	public static function validateChangePassword($data){
+		return Validator::make($data, static::$rules_password_change);
 	}
 
 }

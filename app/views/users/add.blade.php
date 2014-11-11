@@ -3,21 +3,60 @@
 @section('body-content')
 
 	<h1>New User Add</h1>
-{{ Form::open(array('route' => array('user_add'))) }} 
+{{ Form::open(array('route' => array('user-cretae-post'))) }} 
 <table class="table">
 	<tbody>
 	<tr>
-		<td>User Name</td>
-		<td>{{ Form::text('name', Input::old('name')) }}</td>
+		<td>Name</td>
+		<td>{{ Form::text('name', Input::old('name')) }}
+
+		@if($errors->has('name'))
+			{{ $errors->first('name') }}
+		@endif
+
+		</td>
 	</tr>
 	<tr>
 		<td>Email</td>
-		<td>{{ Form::text('email', Input::old('email')) }}</td>
+		<td>{{ Form::text('email', Input::old('email')) }}
+		
+		@if($errors->has('email'))
+					{{ $errors->first('email') }}
+		@endif
+
+		</td>
 	</tr>
 	<tr>
-		<td>Country</td>
-		<td>{{ Form::select('country_id', $country_options , Input::old('country_id')) }}</td>
+		<td>User Name</td>
+		<td>{{ Form::text('username', Input::old('username')) }}
+
+		@if($errors->has('username'))
+					{{ $errors->first('username') }}
+		@endif
+
+		</td>
 	</tr>
+	<tr>
+		<td>Password</td>
+		<td>{{ Form::password('password') }}
+
+		@if($errors->has('password'))
+					{{ $errors->first('password') }}
+		@endif
+
+		</td>
+	</tr>
+	<tr>
+		<td>Re-Password</td>
+		<td>{{ Form::password('password_again') }}
+
+		@if($errors->has('password_again'))
+					{{ $errors->first('password_again') }}
+		@endif
+
+		</td>
+	</tr>
+	
     <tr>
 		<td></td>
 		<td>{{ Form::submit('Add New') }}</td>
