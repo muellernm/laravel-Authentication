@@ -3,10 +3,10 @@
 @section('body-content')
 <div><a href="{{URL::route('user-create')}}">New User</a></div>
 	<p>{{ ($message) ? $message : ''; }}</p>
-	<table class="table">
+	<table class="table table-bordered">
 	<thead>
 			<th>S.L</th>
-			<th>User ID</th>
+			<th>User Name</th>
 			<th>Name</th>
 			<th>Email</th>
 			

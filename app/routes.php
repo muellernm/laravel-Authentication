@@ -72,3 +72,6 @@ Route::group( array('before'=> 'guest' ), function(){
 
 
 
+
+App::bind('CountryRepositoryInterface','EloquentCountryRepository');
+Route::resource('country', 'CountryController');

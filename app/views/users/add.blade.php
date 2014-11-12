@@ -11,7 +11,8 @@
 		<td>{{ Form::text('name', Input::old('name')) }}
 
 		@if($errors->has('name'))
-			{{ $errors->first('name') }}
+		<button type="button" class="btn btn-warning">{{ $errors->first('name') }}</button>
+			
 		@endif
 
 		</td>
@@ -21,17 +22,17 @@
 		<td>{{ Form::text('email', Input::old('email')) }}
 		
 		@if($errors->has('email'))
-					{{ $errors->first('email') }}
+				<button type="button" class="btn btn-warning">	{{ $errors->first('email') }}</button>
 		@endif
 
 		</td>
 	</tr>
 	<tr>
 		<td>User Name</td>
-		<td>{{ Form::text('username', Input::old('username')) }}
+		<td>{{ Form::text('username', Input::old('username'), array('class'=>'class="form-control"') ) }}
 
 		@if($errors->has('username'))
-					{{ $errors->first('username') }}
+				<button type="button" class="btn btn-warning">{{ $errors->first('username') }}</button>
 		@endif
 
 		</td>
@@ -41,7 +42,7 @@
 		<td>{{ Form::password('password') }}
 
 		@if($errors->has('password'))
-					{{ $errors->first('password') }}
+				<button type="button" class="btn btn-warning">	{{ $errors->first('password') }}</button>
 		@endif
 
 		</td>
@@ -51,7 +52,7 @@
 		<td>{{ Form::password('password_again') }}
 
 		@if($errors->has('password_again'))
-					{{ $errors->first('password_again') }}
+			<button type="button" class="btn btn-warning">{{ $errors->first('password_again') }}</button>
 		@endif
 
 		</td>
