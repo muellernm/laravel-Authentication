@@ -14,12 +14,19 @@ class UserController extends \BaseController {
 	|	Route::get('/', 'HomeController@showWelcome');
 	|
 	*/
+	// private $user;
+
+	// function __construct($user){
+	// 	$this->user = $user; 
+	// }
 
 	public function getIndex()
 	{
 		$data = User::all();
 		//$message = ($message) ? $message : 'N/A';
-		return View::make('users.index', array('data'=>$data, 'message'=>'Hello') )->with('title', 'User List');
+		return View::make('users.index', array('data'=>$data, 'message'=>'Hello') )
+		->with('title', 'User List')
+		->with('ser', 1);
 	}
 
 	public function getCreate()
@@ -38,12 +45,50 @@ class UserController extends \BaseController {
 		}
 		else
 		{
-			$name         =  Input::get('name');
-			$email        =  Input::get('email');
-			$username     =  Input::get('username');
-			$password     =  Input::get('password');
-			$code         =  str_random(60);
-			$active       =  0;
+			$name             = Input::get('name');
+			$email            = Input::get('email');
+			$username         = Input::get('username');
+			$password         = Input::get('password');
+			$code         	  = str_random(60);
+			$active       	  = 0;
+
+			/*
+				* Extra fields are added below
+			*/
+			$country_id    	  = Input::get('country_id');
+			$address		  = Input::get('address');
+			$hobbies          = implode(',', Input::get('hobby'));
+			$gender			  = Input::get('gender');
+			/*
+				* get image info
+			
+				$image            = Input::file('image');
+				$image_tempName       = $image->getFilename();
+				$image_name       = $image->getClientOriginalName();
+				$imageSize       = $image->getClientSize();
+				$imageMimeType       = $image->getClientMimeType();
+				$imagePath       = $image->getRealPath();
+				$imageMimeType       = $image->getClientMimeType();
+
+				$image->move(__DIR__.'/storage/',$image_name());
+			*/
+
+			$destinationPath 	 = '';
+		    $filename        	 = '';
+
+		    if (Input::hasFile('image')) {
+		        $file            = Input::file('image');
+		        $destinationPath = '/img/uploads/';
+		        $filename        = str_random(6) . '_' . $file->getClientOriginalName();      
+		        // resize image if needed
+				//$resizeImage      = Image::make($file->getRealPath())
+				   // ->resize(870, null, true, false);
+				    //->save($pathToFile);
+
+				$uploadSuccess   = $file->move(__DIR__.$destinationPath, $filename);
+		        $dbFileName      = $destinationPath.$filename;
+		    }
+
 
 			$user             = new User;
 			$user->name       = $name ;
@@ -51,10 +96,22 @@ class UserController extends \BaseController {
 			$user->username   = $username;
 			$user->password   = Hash::make($password);
 			$user->code       = $code;
-			$user->active       = $active ;
+			$user->active     = $active ;
+
+			/*
+				* Save Extra Fields to DB
+			*/
+
+			$user->country_id = $country_id;
+			$user->address 	  = $address;
+			$user->hobbies    = $hobbies;
+			$user->gender     = $gender;
+			$user->file       = $dbFileName;
+
 			$user->save();
 
-			 Mail::send('emails.auth.activate', array('link'=> URL::route('user-activate', $code), 'username'=>$username ), function($message) use ($user) {
+			 Mail::send('emails.auth.activate', array('link'=> URL::route('user-activate', $code), 'username'=>$username ), 
+			 	function($message) use ($user) {
 				$message->to($user->email, $user->username)
 				->subject('Your Account Activation');
 			});
@@ -143,10 +200,15 @@ class UserController extends \BaseController {
 					'active' => 1
 				), $remember);
             if($auth){
-            	return Redirect::intended('/');
+            	return Redirect::intended('/')
+            			->with('message', 'Sign in Successfully!')
+            			->with('message_type', 'success');
             }
             else{
-            	return Redirect::route('user-sign-in')->with('message', 'Unauthorised sign in');
+            	return Redirect::route('user-sign-in')
+            			->with('message', 'Unauthorised sign in')
+            			->with('message_type', 'danger')
+            		;
             }
 
 		}

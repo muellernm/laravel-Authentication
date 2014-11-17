@@ -6,6 +6,7 @@
 	<table class="table table-bordered">
 	<thead>
 			<th>S.L</th>
+			<th>Photo</th>
 			<th>User Name</th>
 			<th>Name</th>
 			<th>Email</th>
@@ -13,11 +14,10 @@
 			<th colspan="2">Action</th>
 	</thead>
 	<tbody>
-		
-	<?php $ser = 1; ?>
     @foreach ($data as $user)
     <tr>
 			<td> {{ $ser++ }} </td>
+			<td><img class="img-responsive" src="{{ asset($user->file) }}" > </td>
 			<td> {{ $user->username }} </td>
 			<td> {{ $user->name }} </td>
 			<td> {{ $user->email }} </td>

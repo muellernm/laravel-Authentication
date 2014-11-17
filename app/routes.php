@@ -18,21 +18,21 @@ Route::get('user/profile/{username}', array('as' => 'user-profile','uses' => 'Us
 /*
 	* Authenticated group 
 */
-Route::group( array('before'=> 'auth' ), function(){
+Route::group( array('before'=> 'auth', 'prefix' => 'user' ), function(){
 
 	Route::group(array('before'=> 'csrf'), function(){
 
-		Route::post('user/change-password', array('as' => 'user-change-password-post','uses' => 'UserController@postChangePassword'));	
+		Route::post('/change-password', array('as' => 'user-change-password-post','uses' => 'UserController@postChangePassword'));	
 	});
 
 	/*
 		* Change Password
 	*/
-Route::get('user/change-password', array('as' => 'user-change-password','uses' => 'UserController@getChangePassword'));	/*
+Route::get('/change-password', array('as' => 'user-change-password','uses' => 'UserController@getChangePassword'));	/*
 	/*
 		* Sign Out
 	*/
-Route::get('user/sign-out', array('as' => 'user-sign-out','uses' => 'UserController@getSignOut'));
+Route::get('/sign-out', array('as' => 'user-sign-out','uses' => 'UserController@getSignOut'));
 
 });
 
@@ -40,28 +40,28 @@ Route::get('user/sign-out', array('as' => 'user-sign-out','uses' => 'UserControl
 	* Unauthenticated group 
 */
 
-Route::group( array('before'=> 'guest' ), function(){
+Route::group( array('before'=> 'guest', 'prefix'=>'user' ), function(){
 	/*
 		* CSRF protection group
 	*/
 	Route::group(array('before'=> 'csrf'), function(){
-		Route::post('user/new', array('as' => 'user-cretae-post','uses' => 'UserController@postCreate'));
-		Route::post('user/sign-in', array('as' => 'user-sign-in-post','uses' => 'UserController@postSignIn'));
-		Route::post('user/recover-password/', array('as' => 'user-forgot-password-post','uses' => 'UserController@postForgotPassword'));
+		Route::post('/new', array('as' => 'user-cretae-post','uses' => 'UserController@postCreate'));
+		Route::post('/sign-in', array('as' => 'user-sign-in-post','uses' => 'UserController@postSignIn'));
+		Route::post('/recover-password/', array('as' => 'user-forgot-password-post','uses' => 'UserController@postForgotPassword'));
 	});
 
-	Route::get('user/forgot-password', array('as' => 'user-forgot-password','uses' => 'UserController@getForgotPassword'));
-	Route::get('user/recover-password/{code}', array('as' => 'user-recover-password','uses' => 'UserController@getRecoverPassword'));		
+	Route::get('/forgot-password', array('as' => 'user-forgot-password','uses' => 'UserController@getForgotPassword'));
+	Route::get('/recover-password/{code}', array('as' => 'user-recover-password','uses' => 'UserController@getRecoverPassword'));		
 
 	Route::get('users', array('as' => 'user-list','uses' => 'UserController@getIndex'));
-	Route::get('user/new', array('as' => 'user-create','uses' => 'UserController@getCreate'));
-	Route::get('user/sign-in', array('as' => 'user-sign-in','uses' => 'UserController@getSignIn'));	
+	Route::get('/new', array('as' => 'user-create','uses' => 'UserController@getCreate'));
+	Route::get('/sign-in', array('as' => 'user-sign-in','uses' => 'UserController@getSignIn'));	
 	
-	Route::get('user/activate/{code}', array('as' => 'user-activate', 'uses'=>'UserController@getActivate'));
+	Route::get('/activate/{code}', array('as' => 'user-activate', 'uses'=>'UserController@getActivate'));
 
-	Route::get('user/view/{id}', array('as' => 'user_get_edit','uses' => 'UserController@get_edit'));
-	Route::put('user/update/{id}', array('as' => 'put_user_update','uses' => 'UserController@get_update'));
-	Route::delete('user/destroy/{id}', array('as' => 'delete_user_destroy','uses' => 'UserController@destroy'));
+	Route::get('/view/{id}', array('as' => 'user_get_edit','uses' => 'UserController@get_edit'));
+	Route::put('/update/{id}', array('as' => 'put_user_update','uses' => 'UserController@get_update'));
+	Route::delete('/destroy/{id}', array('as' => 'delete_user_destroy','uses' => 'UserController@destroy'));
 	
 
 });

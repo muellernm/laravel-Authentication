@@ -22,12 +22,13 @@
 	
 	@include('layout.nav')
 	@if(Session::has('message'))
-<div class="alert alert-info">
-  <button type="button" class="close" data-dismiss="alert">&times;</button>
+<div class="alert alert-{{ Session::get('message_type') }}">
+  <span type="button" class="close" data-dismiss="alert">&times;</span>
  <strong> {{ Session::get('message') }}</strong>
 </div>
-</button></div>
-	@endif<div class="container">
+
+	@endif
+	<div class="container">
 		@yield('body-content')
 	</div>
 </body>
