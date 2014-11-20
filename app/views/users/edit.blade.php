@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('layout.admin_main')
 
 @section('body-content')
 
@@ -21,8 +21,32 @@
 	</tr>
 	<tr>
 		<td>Country</td>
+		<td>{{ Form::select('country_id', $country_options, $user->country_id) }}</td>
+	</tr>
+	<tr>
+		<td>Address</td>
+		<td>{{ Form::textarea('address', $user->address, ['size' => '30x5']) }}</td>
+	</tr>
+    <tr>
+		<td>Address</td>
+		<td>	
+		<?php $hobbies = explode(',', $user->hobby); ?>
+		{{ 
+
+		Form::checkbox('hobby[]', 'cricket', (in_array('cricket', $hobbies)) ) }}Cricket
+		{{ Form::checkbox('hobby[]', 'football', $user->hobby) }}football
+		{{ Form::checkbox('hobby[]', 'basket_ball', $user->hobby) }}Basket Ball</td>
+	</tr>
+    <tr>
+		<td>Country</td>
 		<td>{{ Form::select('country_id', $country_options , Input::old('country_id')) }}</td>
 	</tr>
+    <tr>
+		<td>Photo</td>
+		<td>
+		{{ Form::hidden('old_image', $user->file) }}
+		<img class="img-responsive" src="{{ asset($user->file) }}" width="70" height="80" ></td>
+	</tr> 
     <tr>
 		<td></td>
 		<td>{{ Form::submit('Update User') }}</td>

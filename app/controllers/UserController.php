@@ -31,8 +31,10 @@ class UserController extends \BaseController {
 
 	public function getCreate()
 	{
-		$country_options = DB::table('country')->orderBy('country_name', 'asc')->lists('country_name','id');
-		return View::make('users.add')->with('country_options',$country_options)->with('title', 'New User');
+		$country_options = Country::lists( 'name', 'id' );
+		return View::make('users.add')
+		->with('country_options',$country_options)
+		->with('title', 'New User');
 	}
 
 	public function postCreate()
@@ -41,7 +43,9 @@ class UserController extends \BaseController {
 		$validation = User::validate(Input::all() );
 		if($validation->fails())
 		{
-			return Redirect::route('user-create')->withErrors($validation)->withInput();
+			return Redirect::route('user-create')
+			->withErrors($validation)			
+			->withInput();
 		}
 		else
 		{
@@ -59,36 +63,20 @@ class UserController extends \BaseController {
 			$address		  = Input::get('address');
 			$hobbies          = implode(',', Input::get('hobby'));
 			$gender			  = Input::get('gender');
-			/*
-				* get image info
-			
-				$image            = Input::file('image');
-				$image_tempName       = $image->getFilename();
-				$image_name       = $image->getClientOriginalName();
-				$imageSize       = $image->getClientSize();
-				$imageMimeType       = $image->getClientMimeType();
-				$imagePath       = $image->getRealPath();
-				$imageMimeType       = $image->getClientMimeType();
-
-				$image->move(__DIR__.'/storage/',$image_name());
-			*/
 
 			$destinationPath 	 = '';
 		    $filename        	 = '';
 
 		    if (Input::hasFile('image')) {
-		        $file            = Input::file('image');
-		        $destinationPath = '/img/uploads/';
-		        $filename        = str_random(6) . '_' . $file->getClientOriginalName();      
-		        // resize image if needed
-				//$resizeImage      = Image::make($file->getRealPath())
-				   // ->resize(870, null, true, false);
-				    //->save($pathToFile);
 
-				$uploadSuccess   = $file->move(__DIR__.$destinationPath, $filename);
-		        $dbFileName      = $destinationPath.$filename;
+		        $file            = Input::file('image');
+		        $destinationPath = 'public/img/uploads/';
+		        $filename        = str_random(6) . '_' . $file->getClientOriginalName();      
+		        $uploadSuccess   = $file->move($destinationPath, $filename);
+		        $dbFileName      = './img/uploads/'.$filename;
 		    }
 
+			
 
 			$user             = new User;
 			$user->name       = $name ;
@@ -110,13 +98,13 @@ class UserController extends \BaseController {
 
 			$user->save();
 
-			 Mail::send('emails.auth.activate', array('link'=> URL::route('user-activate', $code), 'username'=>$username ), 
-			 	function($message) use ($user) {
-				$message->to($user->email, $user->username)
-				->subject('Your Account Activation');
-			});
+			 // Mail::send('emails.auth.activate', array('link'=> URL::route('user-activate', $code), 'username'=>$username ), 
+			 // 	function($message) use ($user) {
+				// $message->to($user->email, $user->username)
+				// ->subject('Your Account Activation');
+			//});
 
-			return Redirect::route('user-list')->with('message', 'New User created Successfully!');
+			return Redirect::route('user-list')->with('message', 'New User created Successfully!')->with('message_type', 'success');
 		}
 		
 	}
@@ -124,13 +112,15 @@ class UserController extends \BaseController {
 	 {
 
 	 	User::find($id)->delete();
-	 	return Redirect::route('user-list')->with('message', 'User Deleted');
+	 	return Redirect::route('user-list')
+	 	->with('message', 'User Deleted Successfully')
+	 	->with('message_type', 'delete');
 
 	 }
 	
 	public function get_edit($id)
 	{
-		$country_options = DB::table('country')->orderBy('country_name', 'asc')->lists('country_name','id');
+		$country_options = Country::lists( 'name', 'id' );
 		$user = User::find($id);
 		return View::make('users.edit', array('user'=> $user))->with('country_options', $country_options);
 
@@ -146,12 +136,32 @@ class UserController extends \BaseController {
 		}
 		else
 		{
-			$user = User::find($id);
+
+			if (Input::hasFile('image')) {
+
+		        $file            = Input::file('image');
+		        $destinationPath = 'public/img/uploads/';
+		        $filename        = str_random(6) . '_' . $file->getClientOriginalName();      
+		        $uploadSuccess   = $file->move($destinationPath, $filename);
+		        $dbFileName      = './img/uploads/'.$filename;
+		    }
+		    else{
+
+		    	 $dbFileName      = Input::file('old_image');
+		    }
+
+		    $user = User::find($id);
             $user->name       = Input::get('name');
             $user->email      = Input::get('email');
+            $user->file       = $dbFileName;
             $user->save();
 
-   //          Mail::send('emails.auth.activate', array('link'=> URL::route('user-activate', $user->code), 'username'=>$username ), function($message) use $user {
+            $destinationPath 	 = '';
+		    $filename        	 = '';
+
+		    
+
+   			//  Mail::send('emails.auth.activate', array('link'=> URL::route('user-activate', $user->code), 'username'=>$username ), function($message) use $user {
 			// 	$message->to($user->email, $user->name)
 			// 	->subject('Your Account Activation');
 			// });

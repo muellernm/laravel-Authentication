@@ -53,7 +53,7 @@ Route::group( array('before'=> 'guest', 'prefix'=>'user' ), function(){
 	Route::get('/forgot-password', array('as' => 'user-forgot-password','uses' => 'UserController@getForgotPassword'));
 	Route::get('/recover-password/{code}', array('as' => 'user-recover-password','uses' => 'UserController@getRecoverPassword'));		
 
-	Route::get('users', array('as' => 'user-list','uses' => 'UserController@getIndex'));
+	Route::get('/users', array('as' => 'user-list','uses' => 'UserController@getIndex'));
 	Route::get('/new', array('as' => 'user-create','uses' => 'UserController@getCreate'));
 	Route::get('/sign-in', array('as' => 'user-sign-in','uses' => 'UserController@getSignIn'));	
 	
