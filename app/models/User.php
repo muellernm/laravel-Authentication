@@ -55,4 +55,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		return Validator::make($data, static::$rules_password_change);
 	}
 
+	public function phone()
+    {
+        return $this->hasMany('Phone');
+    }
+
 }

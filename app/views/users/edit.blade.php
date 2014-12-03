@@ -53,6 +53,9 @@
 	</tr>
     </tbody>
     
+    @foreach($phones as $phone)
+    	{{ $phone->phone.'<br />' }}
+    @endforeach
 {{ Form::close() }}
 
 @stop

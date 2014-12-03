@@ -122,7 +122,8 @@ class UserController extends \BaseController {
 	{
 		$country_options = Country::lists( 'name', 'id' );
 		$user = User::find($id);
-		return View::make('users.edit', array('user'=> $user))->with('country_options', $country_options);
+		$phones = User::find($id)->phone;
+		return View::make('users.edit', array('user'=> $user, 'phones'=> $phones))->with('country_options', $country_options);
 
 	}
 
